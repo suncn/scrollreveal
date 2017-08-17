@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ScrollReveal</title>
+    <script src="../src/scrollreveal.js"></script>
+    <script>
+      (function(){
+
+        var config = {
+          viewFactor : 0,
+          // reset: true
+        }
+
+        window.sr = new ScrollReveal(config)
+      })()
+
+    </script>
+    <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+
+    .msg{
+      margin: 20px 0;
+      background: red;
+      height: 200px;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div class="msgs">
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+      <div class="msg"></div>
+    </div>
+    <script>
+
+          var hero = {
+            origin   : "bottom",
+            distance : "80px",
+            duration : 2000,
+            // viewOffset: { top: 300,bottom:300 },
+            scale    : 1,
+          }
+
+          // var hero2 = {
+          //   origin   : "right",
+          //   distance : "40px",
+          //   duration : 1200,
+          //   scale    : 1,
+          // }
+
+          sr.reveal(".msg", hero)
+          // sr.reveal(".msg", hero2)
+    </script>
+  </body>
+</html>
