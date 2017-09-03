@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>测试元素在文档中是否可见的代码</title>
+	<script>
+		// 获取元素距离文档顶部的距离和元素内容宽高
+		function _getOffset(domEl) {
+			var offsetTop = 0;
+			var offsetLeft = 0;
+
+			// Grab the element’s dimensions.
+			// 抓取动画元素尺寸
+			var offsetHeight = domEl.offsetHeight;
+			var offsetWidth = domEl.offsetWidth;
+
+			// Now calculate the distance between the element and its parent, then
+			// again for the parent to its parent, and again etc... until we have the
+			// total distance of the element to the document’s top and left origin.
+			do {
+				if (!isNaN(domEl.offsetTop)) {
+					offsetTop += domEl.offsetTop;
+				}
+				if (!isNaN(domEl.offsetLeft)) {
+					offsetLeft += domEl.offsetLeft;
+				}
+				domEl = domEl.offsetParent;
+			} while (domEl);
+
+			return {
+				top: offsetTop,
+				left: offsetLeft,
+				height: offsetHeight,
+				width: offsetWidth
+			};
+		}
+
+
+		// 判断动画元素是否可见
+		function _isElemVisible(elem) {
+			elem.config = {};
+			elem.config.viewOffset = {
+				top: 0,
+				right: 0,
+				bottom: 0,
+				left: 0
+			};
+			var offset = _getOffset(elem); // 获取元素宽高和文档距离
+			console.log("offset", offset);
+			var container = window.document.documentElement; // 获取动画元素容器
+			var scrolled = _getScrolled(container); // 获取动画元素容器距离文档距离和元素内容宽高
+			console.log("scrolled", scrolled);
+			var vF = 0.1; // 动画元素百分比部分可见 才开始动画
+
+			// Define the element geometry.
+			// 定义元素坐标
+			var elemHeight = offset.height;
+			var elemWidth = offset.width;
+			var elemTop = offset.top;
+			var elemLeft = offset.left;
+			// 元素底部距离文档顶部距离
+			var elemBottom = elemTop + elemHeight;
+			// 元素右侧距离文档左侧距离
+			var elemRight = elemLeft + elemWidth;
+
+			return confirmBounds();
+
+			function confirmBounds() {
+				// Define the element’s functional boundaries using its view factor.
+				// 元素显示的上界限
+				var top = elemTop + elemHeight * vF;
+				// 元素显示的左界限
+				var left = elemLeft + elemWidth * vF;
+				// 元素显示的下界限
+				var bottom = elemBottom - elemHeight * vF;
+				// 元素显示的右界限
+				var right = elemRight - elemWidth * vF;
+
+				// Define the container functional boundaries using its view offset.
+				// 当前屏幕顶部到文档顶部距离
+				var viewTop = scrolled.y + elem.config.viewOffset.top;
+				// 当前屏幕左侧到文档顶部距离
+				var viewLeft = scrolled.x + elem.config.viewOffset.left;
+				// 当前屏幕底部到文档顶部距离
+				var viewBottom =
+					scrolled.y - elem.config.viewOffset.bottom + container.clientHeight;
+				var viewRight =
+					scrolled.x - elem.config.viewOffset.right + container.clientWidth;
+				return (
+					top < viewBottom &&
+					bottom > viewTop &&
+					left < viewRight &&
+					right > viewLeft
+				);
+			}
+		}
+
+		// 获取内容滚动距离 容器滚动距离+容器距离文档顶部距离
+		function _getScrolled(container) {
+			// Return the container scroll values, plus the its offset.
+			if (container && container !== window.document.documentElement) {
+				var offset = _getOffset(container);
+				return {
+					x: container.scrollLeft + offset.left,
+					y: container.scrollTop + offset.top
+				};
+			} else {
+				// Otherwise, default to the window object’s scroll values.
+				return {
+					x: window.pageXOffset,
+					y: window.pageYOffset
+				};
+			}
+		}
+
+		function showTip() {
+			var el = document.getElementById("box"),
+          tip = document.querySelector(".tip");
+			if (_isElemVisible(el)) {
+				tip.innerHTML="可见";
+			} else {
+				tip.innerHTML="不可见";
+			}
+		}
+
+		window.addEventListener("scroll", showTip);
+		// window.document.documentElement.addEventListener("click", showTip);
+	</script>
+
+	<style>
+		#box {
+			margin: 0;
+			width: 50px;
+			height: 50px;
+			background: red;
+		}
+
+		.v-height {
+			height: 800px;
+		}
+
+    .tip{
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+	</style>
+</head>
+
+<body>
+  <div class="tip"></div>
+	<div class="v-height"></div>
+  <div id="box-container">
+    <div id="box" class="box"></div>
+  </div>
+	<div class="v-height"></div>
+</body>
+
+</html>

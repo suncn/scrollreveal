@@ -164,7 +164,7 @@
    * @param {number}               [interval] Time between sequenced element animations (milliseconds).
    * interval 序列动画间隔
    * @param {boolean}              [sync]     Used internally when updating reveals for async content.
-   * sync 当为异步内容做重新 TODO
+   * sync 是否是同步 TODO
    *
    * @return {Object} The current ScrollReveal instance.
    */
@@ -269,6 +269,7 @@
 
 		// Since `reveal()` is called internally by `sync()`, we don’t want to
 		// record or intiialize each reveal during syncing.
+		// 因为reveal被sync内部调用 所以在sync
 		if (!sync && sr.isSupported()) {
 			_record(target, config, interval);
 
@@ -289,9 +290,11 @@
 	/**
    * Re-runs `reveal()` for each record stored in history, effectively capturing
    * any content loaded asynchronously that matches existing reveal set targets.
+   * 对history中存储的记录重新执行reveal
    * @return {Object} The current ScrollReveal instance.
    */
 	ScrollReveal.prototype.sync = function() {
+
 		if (sr.history.length && sr.isSupported()) {
 			for (var i = 0; i < sr.history.length; i++) {
 				var record = sr.history[i];
@@ -540,12 +543,14 @@
 
 			// Then we loop through all container nodes in the store and bind event
 			// listeners to each.
+			// 所有已保存的父容器做绑定
 			for (var i = 0; i < sr.store.containers.length; i++) {
 				sr.store.containers[i].addEventListener("scroll", _handler);
 				sr.store.containers[i].addEventListener("resize", _handler);
 			}
 
 			// Let’s also do a one-time binding of window event listeners.
+			// window做一次绑定
 			if (!sr.initialized) {
 				window.addEventListener("scroll", _handler);
 				window.addEventListener("resize", _handler);
